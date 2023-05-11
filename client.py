@@ -1,11 +1,20 @@
 import socket
 from threading import Thread
 
+MESSAGES = []
+
+def refreshMessages():
+    
+    
+    print(MESSAGES[-1])
+
+
 def receiveMsg(client_socket):
     while True:
         try:
             data = client_socket.recv(514).decode()  # receive response
-            print(data)
+            MESSAGES.append(data)
+            refreshMessages()
         except Exception as e:
             break
 
@@ -25,6 +34,7 @@ def client_program():
         client_socket.send(message.encode())  # send message
 
         message = input()  # again take input
+        MESSAGES.append(message)
     else:
         client_socket.send(message.encode())
     client_socket.close()  # close the connection
